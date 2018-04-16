@@ -1,0 +1,134 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @employee.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @employee.last_name %>
+</p>
+
+<p>
+  <strong>Phone number:</strong>
+  <%= @employee.phone_number %>
+</p>
+
+<% user = User.find(@employee.user_id) %>
+<% email = user.email %>
+
+<p>
+  <strong>Email:</strong>
+  <%= email %>
+</p>
+
+<h1>Your current positions:</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Pay rate</th>
+      <th>Schedule type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @works_as.each do |position| %>
+    <tr>
+      <td><%= position.title %></td>
+      <td><%= position.pay_rate %></td>
+      <td><%= position.schedule_type %></td>
+      <td><%= link_to 'Remove', {:controller => 'positions', :action => 'destroy', :id => position.id, :emp => @employee} %></td>
+
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1>Jobs available:</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Pay rate</th>
+      <th>Schedule type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td><%= job.title %></td>
+        <td><%= job.pay_rate %></td>
+        <td><%= job.schedule_type %></td>
+        <td><%= link_to 'Add', { :controller => 'positions', :action => 'create', :emp_id => @employee.id, :j_id => job.id} %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<h1>Your reserved hourly time slots:</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Day of week</th>
+      <th>Starting time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reserved_slots.each do |reservedslot| %>
+    <tr>
+      <td><%= reservedslot.title %></td>
+      <td><%= reservedslot.day_of_week %></td>
+      <td><%= reservedslot.start_time.strftime("%H:%M") %></td>
+      <td><%= link_to 'Remove', { :controller =>'reservedslots', :action => 'destroy', :id => reservedslot.id, :emp_id => @employee.id } %></td>
+
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1>Available time slots for you:</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Day of week</th>
+      <th>Starting time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @timeslots.each do |timeslot| %>
+      <% @works_as.each do |position| %>
+        <% if timeslot.job_id == position.job_id and timeslot.reserved == false%>
+          <tr>
+            <td><%= timeslot.title %></td>
+            <td><%= timeslot.day_of_week %></td>
+            <td><%= timeslot.start_time.strftime("%H:%M") %></td>
+            <td><%= link_to 'Add', { :controller => 'reservedslots', :action => 'create', :emp_id => @employee.id, :timeslot_id => timeslot.id, :start_time => timeslot.start_time, :day_of_week => timeslot.day_of_week} %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Edit', edit_employee_path(@employee) %> |
+<%= link_to 'Back', employees_path %>

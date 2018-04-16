@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  pay_rate: 1.5
+  schedule_type: MyString
+
+two:
+  title: MyString
+  pay_rate: 1.5
+  schedule_type: MyString

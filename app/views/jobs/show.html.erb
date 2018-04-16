@@ -1,0 +1,82 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @job.title %>
+</p>
+
+<p>
+  <strong>Pay rate:</strong>
+  <%= @job.pay_rate %>
+</p>
+
+<p>
+  <strong>Schedule type:</strong>
+  <%= @job.schedule_type %>
+</p>
+
+<h2>Available time slots</h2>
+<table>
+	<thead>
+		<tr>
+			<th>Starting time</th>
+			<th>Day of the Week</th>
+			<th colspan="3"></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @job.timeslots.each do |timeslot| %>
+			<% if timeslot.reserved == false %>
+				<tr>
+					<td><%= timeslot.start_time.strftime("%H:%M") %></td>
+					<td><%= timeslot.day_of_week %></td>
+					<td><%= link_to 'Remove', {:controller => 'timeslots', :action => 'destroy', :id => timeslot.id, :job => @job} %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>
+
+<h2>Reserved time slots</h2>
+<table>
+	<thead>
+		<tr>
+			<th>Starting time</th>
+			<th>Day of the Week</th>
+			<th colspan="3"></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @job.timeslots.each do |timeslot| %>
+			<% if timeslot.reserved == true %>
+				<tr>
+					<td><%= timeslot.start_time.strftime("%H:%M") %></td>
+					<td><%= timeslot.day_of_week %></td>
+					<td><%= link_to 'Remove', {:controller => 'timeslots', :action => 'destroy', :id => timeslot.id, :job => @job} %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>
+
+<h2>Add a time slot</h2>
+
+<%= form_for([@job, @job.timeslots.build]) do |f| %>
+	<p>
+		<%= f.label :start_time %><br>
+		<%= f.text_field :start_time %>
+	</p>
+	<p>
+		<%= f.label :day_of_week %><br>
+		<%= f.text_field :day_of_week %>
+	</p>
+
+	<p>
+		<%= f.submit %>
+	</p>
+<% end %>
+
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>

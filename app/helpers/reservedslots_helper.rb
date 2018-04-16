@@ -1,0 +1,2 @@
+module ReservedslotsHelper
+end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job: one
+  start_time: 2018-04-15 22:24:19
+  day_of_week: MyString
+  reserved: false
+
+two:
+  job: two
+  start_time: 2018-04-15 22:24:19
+  day_of_week: MyString
+  reserved: false
